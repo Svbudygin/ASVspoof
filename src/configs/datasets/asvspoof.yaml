@@ -1,0 +1,15 @@
+train:
+  _target_: src.datasets.ASVspoofDataset
+  protocol_path: path/to/train_protocol.txt
+  audio_root: path/to/train_audio
+  instance_transforms: ${transforms.instance_transforms.train}
+dev:
+  _target_: src.datasets.ASVspoofDataset
+  protocol_path: path/to/dev_protocol.txt
+  audio_root: path/to/dev_audio
+  instance_transforms: ${transforms.instance_transforms.inference}
+eval:
+  _target_: src.datasets.ASVspoofDataset
+  protocol_path: path/to/eval_protocol.txt
+  audio_root: path/to/eval_audio
+  instance_transforms: ${transforms.instance_transforms.inference}

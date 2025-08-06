@@ -1,0 +1,44 @@
+defaults:
+  - writer: cometml
+  - _self_
+
+train:
+  root_dir: data/ASVspoof2019_LA/ASVspoof2019_LA_train/flac
+  protocol: data/ASVspoof2019_LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.train.trn.txt
+  batch_size: 64
+  num_workers: 4
+  seed: 10100 #507 #500 #1010
+dev:
+  root_dir: data/ASVspoof2019_LA/ASVspoof2019_LA_dev/flac
+  protocol: data/ASVspoof2019_LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.dev.trl.txt
+eval:
+  root_dir: data/ASVspoof2019_LA/ASVspoof2019_LA_eval/flac
+  protocol: data/ASVspoof2019_LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.eval.trl.txt
+
+
+device: cuda 
+
+logger: ${writer}
+
+trainer:
+  n_epochs: 7
+  save_dir: checkpoints
+  save_period: 1
+  log_step: 100
+  max_grad_norm: 5.0
+  monitor: "min dev_eer"
+  early_stop: 5
+  device_tensors: ["spectrogram", "text_encoded"]
+  resume_from: null
+
+label_encoder:
+  _target_: src.label_encoder.ASVTextEncoder
+  labels: ["bonafide", "spoof"]
+
+optimizer:
+  lr: 3e-4
+  weight_decay: 1e-4
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+  T_max: 300

@@ -1,0 +1,12 @@
+train:
+  get_spectrogram:
+    _target_: src.transforms.stft.STFT
+    n_fft: 512
+    hop_length: 160
+    win_length: 400
+inference:
+  get_spectrogram:
+    _target_: src.transforms.stft.STFT
+    n_fft: 512
+    hop_length: 160
+    win_length: 400
